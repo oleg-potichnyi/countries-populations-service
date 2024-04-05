@@ -20,7 +20,7 @@ def get_data(
     country_list: schemas.CountryCreate,
     db: Session = Depends(get_db),
 ):
-    return crud.get_country_data(db=db, country_list=country_list)
+    return crud.get_country_data(db=db)
 
 
 @app.get("/print_data", response_model=list[schemas.CountryList])
