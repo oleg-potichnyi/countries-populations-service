@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 SQLALCHEMY_DATABASE_URL = (
-    "postgresql://username:password@db:5432/countries_populations_service.app.db"
+    "postgresql://username:password@db:5432/countries_populations_service"
 )
 
 
