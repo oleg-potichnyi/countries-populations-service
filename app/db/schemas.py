@@ -15,4 +15,3 @@ class CountryList(CountryBase):
 
     class Config:
         orm_mode = True
-        

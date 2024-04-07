@@ -7,7 +7,9 @@ from bs4 import BeautifulSoup
 
 def get_country_data(db: Session) -> None:
     url = (
-        "https://en.wikipedia.org/w/index.php?title=List_of_countries_by_population_(United_Nations)&oldid=1215058959"
+        "https://en.wikipedia.org/w/index.php?"
+        "title=List_of_countries_by_population_(United_Nations)"
+        "&oldid=1215058959"
     )
     response = requests.get(url).text
     soup = BeautifulSoup(response, "html.parser")
@@ -19,7 +21,9 @@ def get_country_data(db: Session) -> None:
         continental_region = columns[5].text.strip()
 
         country = DBCountry(
-            name=name, population_2023=population_2023, continental_region=continental_region
+            name=name,
+            population_2023=population_2023,
+            continental_region=continental_region,
         )
         db.add(country)
     db.commit()
@@ -47,5 +51,11 @@ def print_summary_data(db: Session) -> None:
         )
         print(f"Region: {region}")
         print(f"Total Population: {total_population}")
-        print(f"Largest Country: {largest_country.name}, Population: {largest_country.population}")
-        print(f"Smallest Country: {smallest_country.name}, Population: {smallest_country.population}")
+        print(
+            f"Largest Country: {largest_country.name}, "
+            f"Population: {largest_country.population}"
+        )
+        print(
+            f"Smallest Country: {smallest_country.name}, "
+            f"Population: {smallest_country.population}"
+        )
