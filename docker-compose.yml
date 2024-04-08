@@ -13,9 +13,9 @@ services:
   db:
     image: postgres
     environment:
-      POSTGRES_USER: username
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: dbname
+      POSTGRES_USER: myusername
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: countries_populations_service
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
