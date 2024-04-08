@@ -8,7 +8,7 @@ services:
     depends_on:
       - db
     environment:
-      - SQLALCHEMY_DATABASE_URL=${SQLALCHEMY_DATABASE_URL}
+      - SQLALCHEMY_DATABASE_URL=postgresql://myusername:mypassword@db:5432/countries_populations_service
 
   db:
     image: postgres
