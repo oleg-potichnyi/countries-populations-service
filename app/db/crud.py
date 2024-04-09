@@ -16,9 +16,11 @@ def get_country_data(db: Session) -> None:
 
     for row in soup.find("table", class_="wikitable").find_all("tr")[2:]:
         columns = row.find_all("td")
-        name = columns[1].text.strip()
-        population_2023 = int(columns[3].text.strip().replace(",", ""))
-        continental_region = columns[5].text.strip()
+        name = columns[0].text.strip()
+        population_2023 = 0
+        if columns[2].text.strip() != "N/A":
+            population_2023 = int(columns[2].text.strip().replace(",", ""))
+        continental_region = columns[4].text.strip()
 
         country = DBCountry(
             name=name,
@@ -32,6 +34,7 @@ def get_country_data(db: Session) -> None:
 def print_summary_data(db: Session) -> None:
     regions = db.query(DBCountry.continental_region).distinct().all()
     for region in regions:
+        region = region[0]
         total_population = (
             db.query(func.sum(DBCountry.population_2023))
             .filter_by(continental_region=region)
@@ -53,9 +56,9 @@ def print_summary_data(db: Session) -> None:
         print(f"Total Population: {total_population}")
         print(
             f"Largest Country: {largest_country.name}, "
-            f"Population: {largest_country.population}"
+            f"Population: {largest_country.population_2023}"
         )
         print(
             f"Smallest Country: {smallest_country.name}, "
-            f"Population: {smallest_country.population}"
+            f"Population: {smallest_country.population_2023}"
         )

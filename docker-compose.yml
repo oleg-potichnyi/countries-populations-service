@@ -1,17 +1,35 @@
 version: "3.8"
 
 services:
-  app:
+  get_data:
     build: .
-    ports:
-      - "8000:8000"
+    command: alembic upgrade head && python get_data.py
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - SQLALCHEMY_DATABASE_URL=postgresql://myusername:mypassword@db:5432/countries_populations_service
+    restart: always
+
+  print_data:
+    build: .
+    command: python print_data.py
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - SQLALCHEMY_DATABASE_URL=postgresql://myusername:mypassword@db:5432/countries_populations_service
+    restart: always
 
   db:
     image: postgres
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U myusername" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_USER: myusername
       POSTGRES_PASSWORD: mypassword
